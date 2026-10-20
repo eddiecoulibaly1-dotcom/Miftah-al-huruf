@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "books": {
+    "bourda": {
+      "name": "La Bourdah",
+      "source": "AL-Bourda_Cheikh Samba Diagne.pdf",
+      "pages": 87,
+      "image_dir": "assets/bourda",
+      "text_index": "data/ocr-index.json"
+    },
+    "idrissiya": {
+      "name": "Les Noms Idrīsiyya",
+      "source": "34832145-الروضة-السندسية-في-الاسماء-الادريسية-السهرورية.pdf",
+      "pages": 66,
+      "image_dir": "assets/idrissiya",
+      "text_index": null
+    },
+    "barhout": {
+      "name": "Livre Barhout",
+      "source": "Livre Barhout(1).pdf",
+      "pages": 34,
+      "image_dir": "assets/barhout",
+      "text_index": null
+    }
+  },
+  "technical_source": "assets/technique.pdf"
+}
