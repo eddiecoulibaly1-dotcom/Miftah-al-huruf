@@ -9,20 +9,20 @@ on:
 jobs:
   build:
     name: Build Miftah al-Huruf APK
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Java
+      - name: Setup Java 21
         uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '21'
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
 
@@ -30,15 +30,27 @@ jobs:
         run: npm install
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
+        with:
+          cmdline-tools-version: '15859902'
+          accept-android-sdk-licenses: 'true'
+          log-accepted-android-sdk-licenses: 'false'
+          packages: 'platform-tools'
 
-      - name: Install Android SDK components
+      - name: Install Android SDK 35
         run: |
-          sdkmanager "platform-tools"
-          sdkmanager "platforms;android-35"
-          sdkmanager "build-tools;35.0.0"
+          sdkmanager --install \
+            "platforms;android-35" \
+            "build-tools;35.0.0"
 
-      - name: Add Android platform
+      - name: Verify Android SDK
+        run: |
+          sdkmanager --list_installed
+          java -version
+          node --version
+          npm --version
+
+      - name: Add Capacitor Android platform
         run: npx cap add android
 
       - name: Sync Capacitor
@@ -49,13 +61,13 @@ jobs:
 
       - name: Build debug APK
         working-directory: android
-        run: ./gradlew assembleDebug
+        run: ./gradlew --no-daemon assembleDebug
 
       - name: Prepare APK
         run: |
           mkdir -p release
           cp android/app/build/outputs/apk/debug/app-debug.apk \
-             release/Miftah-al-Huruf-1.0.0-debug.apk
+            release/Miftah-al-Huruf-1.0.0-debug.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
